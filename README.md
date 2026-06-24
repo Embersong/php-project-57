@@ -1,5 +1,6 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/Embersong/php-project-57/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Embersong/php-project-57/actions)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Embersong_php-project-57&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Embersong_php-project-57)
 
 ## Task manager:
 Task Manager is a task management system similar to http://www.redmine.org/.
