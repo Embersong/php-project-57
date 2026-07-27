@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+h1 {
+    font-size: 3rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+.alert-success {
+    background-color: rgb(187 247 208);
+}
+
+.alert-danger {
+    background-color: rgb(254 205 211);
+}
