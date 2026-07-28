@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -35,12 +36,12 @@ class TaskController extends Controller
         $taskStatusesForFilterForm = TaskStatus::pluck('name', 'id');
         $usersForFilterForm = User::pluck('name', 'id');
         $filterParams = $request->input('filter');
-        return view('task.index', compact(
-            'tasks',
-            'taskStatusesForFilterForm',
-            'usersForFilterForm',
-            'filterParams'
-        ));
+        return view('task.index', [
+            'tasks' => $tasks,
+            'taskStatusesForFilterForm' => $taskStatusesForFilterForm,
+            'usersForFilterForm' => $usersForFilterForm,
+            'filterParams' => $filterParams,
+        ]);
     }
 
     /**
@@ -51,10 +52,13 @@ class TaskController extends Controller
         $task = new Task();
         $taskStatuses = TaskStatus::all();
         $users = User::all();
+        $labels = Label::all();
+
         return view('task.create', [
             'task' => $task,
             'taskStatuses' => $taskStatuses,
             'users' => $users,
+            'labels' => $labels,
         ]);
     }
 
@@ -76,10 +80,14 @@ class TaskController extends Controller
             ]
         );
 
-        $currentUser = Auth::user();
+        $currentUser = $request->user();
 
-        $currentUser->createdTasks()->make($validated)->save();
+        $task = $currentUser->createdTasks()->make($validated);
+        $task->save();
 
+        $labels = collect($request->input('labels'))
+            ->filter(fn($label) => $label !== null);
+        $task->labels()->attach($labels);
 
         flash(__('flashes.tasks.store.success'))->success();
 
@@ -103,8 +111,9 @@ class TaskController extends Controller
     {
         $taskStatuses = TaskStatus::all();
         $users = User::all();
+        $labels = Label::all();
 
-        return view('task.edit', compact('task', 'taskStatuses', 'users'));
+        return view('task.edit', compact('task', 'taskStatuses', 'users', 'labels'));
     }
 
     /**
@@ -125,6 +134,9 @@ class TaskController extends Controller
             ]
         );
 
+        $labels = collect($request->input('labels'))
+            ->filter(fn($label) => $label !== null);
+        $task->labels()->sync($labels);
 
         $task->fill($validated);
         $task->save();
@@ -138,6 +150,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+        $task->labels()->detach();
         $task->delete();
         flash(__('flashes.tasks.deleted'))->success();
 
