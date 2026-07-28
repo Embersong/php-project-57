@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -16,8 +15,8 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
-
+    use HasFactory;
+    use Notifiable;
 
     public function createdTasks(): HasMany
     {
@@ -28,6 +27,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class, 'assigned_to_id');
     }
+
     /**
      * Get the attributes that should be cast.
      *
