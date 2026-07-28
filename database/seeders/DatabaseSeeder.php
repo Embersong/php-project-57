@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        //
 
         User::factory()->create([
             'name' => 'Admin',
@@ -25,14 +25,14 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123'),
         ]);
 
-        $task_statuses = [
-            'новая',
-            'завершена',
-            'выполняется',
-            'в архиве',
-        ];
-        foreach ($task_statuses as $status) {
-            TaskStatus::firstOrCreate(['name' => $status]);
-        }
+        User::factory(10)->create();
+
+        $this->call([
+           // UserSeeder::class,
+            TaskStatusSeeder::class,
+          //  LabelSeeder::class,
+            TaskSeeder::class,
+           // TaskLableSeeder::class,
+        ]);
     }
 }
