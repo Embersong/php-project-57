@@ -113,7 +113,12 @@ class TaskController extends Controller
         $users = User::all();
         $labels = Label::all();
 
-        return view('task.edit', compact('task', 'taskStatuses', 'users', 'labels'));
+        return view('task.edit', [
+            'task' => $task,
+            'taskStatuses' => $taskStatuses,
+            'users' => $users,
+            'labels' => $labels,
+        ]);
     }
 
     /**
