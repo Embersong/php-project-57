@@ -50,8 +50,8 @@ class TaskStatusController extends Controller
         );
 
         TaskStatus::create($validated);
-
-        return redirect()->route('task_statuses.index')->with('success', __('flashes.statuses.store.success'));
+        flash(__('flashes.statuses.store.success'))->success();
+        return redirect()->route('task_statuses.index');
     }
 
     /**
